@@ -1,7 +1,7 @@
 0		bms2_soc
-1		bms2_total_voltage 			* 100
-2		bms2_current 				* 100
-3		bms2_power 					* 10
+1		bms2_total_voltage 		* 100
+2		bms2_current 			* 100
+3		bms2_power 			* 10
 4		bms2_cycles
 5		bms2_cell_avg_voltage 		* 1000
 6		bms2_cell_min_voltage 		* 1000
