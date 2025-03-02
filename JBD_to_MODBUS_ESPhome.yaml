@@ -410,6 +410,9 @@ sensor:
     register_type: holding
     accuracy_decimals: 0
     value_type: U_DWORD
+    unit_of_measurement: s
+    device_class: duration
+    icon: mdi:timer-outline
 
 binary_sensor:
   - platform: modbus_controller
