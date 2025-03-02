@@ -1,0 +1,432 @@
+# This is just a code snippet, please add to your existing ESPhome configuration file
+
+uart:
+  - id: modbus_0        # RS485
+    baud_rate: 19200
+    tx_pin: GPIO4
+    rx_pin: GPIO36
+    # debug:
+      # direction: BOTH
+
+modbus:
+  uart_id: modbus_0
+  id: modbus_esplan
+
+modbus_controller:
+  - id: bms1
+    address: 8
+    modbus_id: modbus_esplan
+    update_interval: 4s
+  # - id: bms2
+    # address: 9
+    # modbus_id: modbus_esplan
+    # update_interval: 4s
+
+sensor:
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 state of charge
+    id: bms1_soc
+    address: 0
+    register_type: holding
+    accuracy_decimals: 0
+    unit_of_measurement: "%"
+    register_count: 41
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 total voltage
+    id: bms1_total_voltage
+    address: 1
+    register_type: holding
+    accuracy_decimals: 2
+    unit_of_measurement: V
+    device_class: voltage
+    filters:
+      multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 current
+    id: bms1_current
+    address: 2
+    value_type: S_WORD
+    register_type: holding
+    accuracy_decimals: 2
+    unit_of_measurement: A
+    device_class: current
+    filters:
+      multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 power
+    id: bms1_power
+    address: 3
+    value_type: S_WORD
+    register_type: holding
+    accuracy_decimals: 1
+    unit_of_measurement: W
+    device_class: power
+    filters:
+      multiply: 0.1
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 charging cycles
+    id: bms1_cycles
+    address: 4
+    register_type: holding
+    accuracy_decimals: 0
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 average cell voltage
+    id: bms1_cell_avg_voltage
+    address: 5
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 min cell voltage
+    id: bms1_cell_min_voltage
+    address: 6
+    unit_of_measurement: V
+    device_class: voltage
+    register_type: holding
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 max cell voltage
+    id: bms1_cell_max_voltage
+    address: 7
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 delta cell voltage
+    id: bms1_cell_delta_voltage
+    address: 8
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 min voltage cell
+    id: bms1_cell_min_number
+    address: 9
+    register_type: holding
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 max voltage cell
+    id: bms1_cell_max_number
+    address: 10
+    register_type: holding
+    accuracy_decimals: 0
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 temperature board
+    id: bms1_temp
+    address: 11
+    register_type: holding
+    unit_of_measurement: °C
+    device_class: temperature
+    accuracy_decimals: 1
+    filters:
+      multiply: 0.1
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 temperature cells 1
+    id: bms1_temp_cells1
+    address: 12
+    register_type: holding
+    unit_of_measurement: °C
+    device_class: temperature
+    accuracy_decimals: 1
+    filters:
+      multiply: 0.1
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 temperature cells 2
+    id: bms1_temp_cells2
+    address: 13
+    register_type: holding
+    unit_of_measurement: °C
+    device_class: temperature
+    accuracy_decimals: 1
+    filters:
+      multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 01
+    id: bms1_cell01_voltage
+    address: 14
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 02
+    id: bms1_cell02_voltage
+    address: 14
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 03
+    id: bms1_cell03_voltage
+    address: 15
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 04
+    id: bms1_cell04_voltage
+    address: 16
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 05
+    id: bms1_cell05_voltage
+    address: 17
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 06
+    id: bms1_cell06_voltage
+    address: 18
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 07
+    id: bms1_cell07_voltage
+    address: 19
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 08
+    id: bms1_cell08_voltage
+    address: 21
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 09
+    id: bms1_cell09_voltage
+    address: 22
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 10
+    id: bms1_cell10_voltage
+    address: 23
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 11
+    id: bms1_cell11_voltage
+    address: 24
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 12
+    id: bms1_cell12_voltage
+    address: 25
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 13
+    id: bms1_cell13_voltage
+    address: 26
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 14
+    id: bms1_cell14_voltage
+    address: 27
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 15
+    id: bms1_cell15_voltage
+    address: 28
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 cell voltage 16
+    id: bms1_cell16_voltage
+    address: 29
+    register_type: holding
+    unit_of_measurement: V
+    device_class: voltage
+    accuracy_decimals: 3
+    filters:
+      multiply: 0.001
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 nominal capacity
+    id: bms1_cap_nominal
+    address: 30
+    register_type: holding
+    unit_of_measurement: Ah
+    accuracy_decimals: 0
+    filters:
+      multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 capacity remaining
+    id: bms1_cap_remaining
+    address: 31
+    register_type: holding
+    unit_of_measurement: Ah
+    accuracy_decimals: 0
+    filters:
+      multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 balancer status bitmask
+    id: bms1_bitmask_balancer
+    address: 35
+    register_type: holding
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 operation status bitmask
+    id: bms1_bitmask_op
+    address: 36
+    register_type: holding
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 errors bitmask
+    id: bms1_bitmask_error
+    address: 37
+    register_type: holding
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 online status
+    id: bms1_online
+    address: 38
+    register_type: holding
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 software version
+    id: bms1_sw_version
+    address: 39
+    register_type: holding
+    accuracy_decimals: 0
+
+  - platform: modbus_controller
+    modbus_controller_id: bms1
+    name: BMS1 ESP32 uptime
+    id: esp_uptime
+    address: 40
+    register_type: holding
+    accuracy_decimals: 0
+    value_type: U_DWORD
+
+binary_sensor:
+  - platform: modbus_controller
+    modbus_controller_id: bms2
+    name: BMS2 balancing
+    id: bms2_battery_balancing
+    address: 32
+    register_type: holding
+  - platform: modbus_controller
+    modbus_controller_id: bms2
+    name: BMS2 charging
+    id: bms2_battery_charging
+    address: 33
+    register_type: holding
+  - platform: modbus_controller
+    modbus_controller_id: bms2
+    name: BMS2 discharging
+    id: bms2_battery_discharging
+    address: 34
+    register_type: holding
