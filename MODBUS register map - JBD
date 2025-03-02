@@ -1,35 +1,35 @@
-0	  	bms2_soc
-1		  bms2_total_voltage        * 100
-2		  bms2_current              * 100
-3		  bms2_power                * 10
-4		  bms2_cycles
-5		  bms2_cell_avg_voltage     * 1000
-6		  bms2_cell_min_voltage     * 1000
-7		  bms2_cell_max_voltage     * 1000
-8		  bms2_cell_delta_voltage   * 1000
-9		  bms2_cell_min_number
+0		bms2_soc
+1		bms2_total_voltage 			* 100
+2		bms2_current 				* 100
+3		bms2_power 					* 10
+4		bms2_cycles
+5		bms2_cell_avg_voltage 		* 1000
+6		bms2_cell_min_voltage 		* 1000
+7		bms2_cell_max_voltage 		* 1000
+8		bms2_cell_delta_voltage		* 1000
+9		bms2_cell_min_number
 10		bms2_cell_max_number
-11		bms2_temp                 * 10
-12		bms2_temp_cells1          * 10
-13		bms2_temp_cells2          * 10
-14		bms2_cell01_voltage       * 1000
-15		bms2_cell02_voltage       * 1000
-16		bms2_cell03_voltage       * 1000
-17		bms2_cell04_voltage       * 1000
-18		bms2_cell05_voltage       * 1000
-19		bms2_cell06_voltage       * 1000
-20		bms2_cell07_voltage       * 1000
-21		bms2_cell08_voltage       * 1000
-22		bms2_cell09_voltage       * 1000
-23		bms2_cell10_voltage       * 1000
-24		bms2_cell11_voltage       * 1000
-25		bms2_cell12_voltage       * 1000
-26		bms2_cell13_voltage       * 1000
-27		bms2_cell14_voltage       * 1000
-28		bms2_cell15_voltage       * 1000
-29		bms2_cell16_voltage       * 1000
-30		bms2_cap_nominal          * 100
-31		bms2_cap_remaining        * 100
+11		bms2_temp					* 10
+12		bms2_temp_cells1			* 10
+13		bms2_temp_cells2			* 10
+14		bms2_cell01_voltage  		* 1000
+15		bms2_cell02_voltage  		* 1000
+16		bms2_cell03_voltage  		* 1000
+17		bms2_cell04_voltage  		* 1000
+18		bms2_cell05_voltage  		* 1000
+19		bms2_cell06_voltage  		* 1000
+20		bms2_cell07_voltage  		* 1000
+21		bms2_cell08_voltage  		* 1000
+22		bms2_cell09_voltage  		* 1000
+23		bms2_cell10_voltage  		* 1000
+24		bms2_cell11_voltage  		* 1000
+25		bms2_cell12_voltage  		* 1000
+26		bms2_cell13_voltage  		* 1000
+27		bms2_cell14_voltage  		* 1000
+28		bms2_cell15_voltage  		* 1000
+29		bms2_cell16_voltage  		* 1000
+30		bms2_cap_nominal 			* 100
+31		bms2_cap_remaining 			* 100
 32		bms2_battery_sw_balancing
 33		bms2_battery_sw_charge
 34		bms2_battery_sw_discharge
