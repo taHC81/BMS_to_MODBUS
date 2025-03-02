@@ -1,0 +1,314 @@
+esphome:
+  name: jbd-uart-rs485
+
+esp32:
+  variant: ESP32C3
+  board: esp32-c3-devkitm-1
+
+external_components:
+  - source: github://syssi/esphome-jbd-bms@main
+    refresh: 0s
+
+# ota:
+  # platform: esphome
+logger:
+# api:
+
+# wifi:
+  # power_save_mode: none
+  # output_power: 15dB
+  # ssid: wifi_ssid
+  # password: wifi_password
+
+uart:
+  - id: uart_0          # JBD BMS UART
+    baud_rate: 9600
+    tx_pin: GPIO5
+    rx_pin: GPIO6
+  - id: modbus_0        # RS485
+    baud_rate: 19200
+    tx_pin: GPIO21      # DI
+    rx_pin: GPIO20      # RO
+    # debug:
+      # direction: BOTH
+
+jbd_bms:
+  uart_id: uart_0
+  update_interval: 2s
+  rx_timeout: 200ms
+
+modbus:
+  id: modbus_conv
+  uart_id: modbus_0
+  flow_control_pin: 10  # DE+RE
+  role: server
+
+modbus_controller:
+  - modbus_id: modbus_conv
+    address: 8                  # modify address to fit your needs
+    command_throttle: 1000ms
+    id: modbus_device
+    server_registers:
+      - address: 0
+        read_lambda: 'return id(bms2_soc).state;'
+      - address: 1
+        read_lambda: 'return id(bms2_total_voltage).state * 100;'
+      - address: 2
+        read_lambda: 'return id(bms2_current).state * 100;'
+      - address: 3
+        read_lambda: 'return id(bms2_power).state * 10;'
+      - address: 4
+        read_lambda: 'return id(bms2_cycles).state;'
+
+      - address: 5
+        read_lambda: 'return id(bms2_cell_avg_voltage).state * 1000;'
+      - address: 6
+        read_lambda: 'return id(bms2_cell_min_voltage).state * 1000;'
+      - address: 7
+        read_lambda: 'return id(bms2_cell_max_voltage).state * 1000;'
+      - address: 8
+        read_lambda: 'return id(bms2_cell_delta_voltage).state * 1000;'
+      - address: 9
+        read_lambda: 'return id(bms2_cell_min_number).state;'
+      - address: 10
+        read_lambda: 'return id(bms2_cell_max_number).state;'
+
+      - address: 11
+        read_lambda: 'return id(bms2_temp).state * 10;'
+      - address: 12
+        read_lambda: 'return id(bms2_temp_cells1).state * 10;'
+      - address: 13
+        read_lambda: 'return id(bms2_temp_cells2).state * 10;'
+
+      - address: 14
+        read_lambda: 'return id(bms2_cell01_voltage).state * 1000;'
+      - address: 15
+        read_lambda: 'return id(bms2_cell02_voltage).state * 1000;'
+      - address: 16
+        read_lambda: 'return id(bms2_cell03_voltage).state * 1000;'
+      - address: 17
+        read_lambda: 'return id(bms2_cell04_voltage).state * 1000;'
+      - address: 18
+        read_lambda: 'return id(bms2_cell05_voltage).state * 1000;'
+      - address: 19
+        read_lambda: 'return id(bms2_cell06_voltage).state * 1000;'
+      - address: 20
+        read_lambda: 'return id(bms2_cell07_voltage).state * 1000;'
+      - address: 21
+        read_lambda: 'return id(bms2_cell08_voltage).state * 1000;'
+      - address: 22
+        read_lambda: 'return id(bms2_cell09_voltage).state * 1000;'
+      - address: 23
+        read_lambda: 'return id(bms2_cell10_voltage).state * 1000;'
+      - address: 24
+        read_lambda: 'return id(bms2_cell11_voltage).state * 1000;'
+      - address: 25
+        read_lambda: 'return id(bms2_cell12_voltage).state * 1000;'
+      - address: 26
+        read_lambda: 'return id(bms2_cell13_voltage).state * 1000;'
+      - address: 27
+        read_lambda: 'return id(bms2_cell14_voltage).state * 1000;'
+      - address: 28
+        read_lambda: 'return id(bms2_cell15_voltage).state * 1000;'
+      - address: 29
+        read_lambda: 'return id(bms2_cell16_voltage).state * 1000;'
+
+      - address: 30
+        read_lambda: 'return id(bms2_cap_nominal).state * 100;'
+      - address: 31
+        read_lambda: 'return id(bms2_cap_remaining).state * 100;'
+
+      - address: 32
+        read_lambda: 'return id(bms2_battery_sw_balancing).state;'
+      - address: 33
+        read_lambda: 'return id(bms2_battery_sw_charge).state;'
+      - address: 34
+        read_lambda: 'return id(bms2_battery_sw_discharge).state;'
+
+      - address: 35
+        read_lambda: 'return id(bms2_bitmask_balancer).state ;'
+      - address: 36
+        read_lambda: 'return id(bms2_bitmask_op).state ;'
+      - address: 37
+        read_lambda: 'return id(bms2_bitmask_error).state ;'
+      - address: 38
+        read_lambda: 'return id(bms2_online).state ;'
+      - address: 39
+        read_lambda: 'return id(bms2_sw_version).state ;'
+
+      - address: 40
+        value_type: U_DWORD
+        read_lambda: |-
+          id(onboard_led).turn_on();
+          return id(esp_uptime).state;    # blink with blue onboard LED during the Modbus read
+
+# text_sensor:
+  # - platform: wifi_info
+    # ip_address:
+      # name: ESP jbd-uart-rs485 IP Address
+    # ssid:
+      # name: ESP jbd-uart-rs485 Connected SSID
+
+switch:
+  # - platform: restart
+    # name: ESP jbd-uart-rs485 restart
+
+  - platform: gpio
+    id: onboard_led
+    pin:
+      number: GPIO8
+      mode: output
+      inverted: true
+    on_turn_on:
+      - delay: 0.05s
+      - switch.turn_off: onboard_led
+
+  - platform: jbd_bms
+    charging:
+      name: "BMS2 charging switch"
+      id: bms2_battery_sw_charge
+    discharging:
+      name: "BMS2 discharging switch"
+      id: bms2_battery_sw_discharge
+
+binary_sensor:
+  - platform: jbd_bms
+    balancing:
+      name: "BMS2 balancing"
+      id: bms2_battery_sw_balancing
+    charging:
+      name: "BMS2 charging"
+      id: bms2_battery_charging
+    discharging:
+      name: "BMS2 discharging"
+      id: bms2_battery_discharging
+    online_status:
+      name: "BMS2 online status"
+      id: bms2_online
+
+# ------------------------------------ sensors ------------------------------------
+
+sensor:
+  - platform: uptime
+    id: esp_uptime
+    name: "ESP jbd-uart-rs485 uptime"
+    update_interval: 60s
+
+  - platform: jbd_bms
+    battery_strings:
+      name: "BMS2 battery strings"
+      id: bms2_battery_strings
+    current:
+      name: "BMS2 current"
+      id: bms2_current
+    power:
+      name: "BMS2 power"
+      id: bms2_power
+    charging_power:
+      name: "BMS2 charging power"
+      id: bms2_charging_power
+    discharging_power:
+      name: "BMS2 discharging power"
+      id: bms2_discharging_power
+    state_of_charge:
+      name: "BMS2 state of charge"
+      id: bms2_soc
+    nominal_capacity:
+      name: "BMS2 nominal capacity"
+      id: bms2_cap_nominal
+    charging_cycles:
+      name: "BMS2 charging cycles"
+      id: bms2_cycles
+    capacity_remaining:
+      name: "BMS2 capacity remaining"
+      id: bms2_cap_remaining
+    total_voltage:
+      name: "BMS2 total voltage"
+      id: bms2_total_voltage
+    average_cell_voltage:
+      name: "BMS2 average cell voltage"
+      id: bms2_cell_avg_voltage
+    delta_cell_voltage:
+      name: "BMS2 delta cell voltage"
+      id: bms2_cell_delta_voltage
+    min_cell_voltage:
+      name: "BMS2 min cell voltage"
+      id: bms2_cell_min_voltage
+    max_cell_voltage:
+      name: "BMS2 max cell voltage"
+      id: bms2_cell_max_voltage
+    min_voltage_cell:
+      name: "BMS2 min voltage cell"
+      id: bms2_cell_min_number
+    max_voltage_cell:
+      name: "BMS2 max voltage cell"
+      id: bms2_cell_max_number
+    temperature_1:
+      name: "BMS2 temperature board"
+      id: bms2_temp
+    temperature_2:
+      name: "BMS2 temperature cells 1"
+      id: bms2_temp_cells1
+    temperature_3:
+      name: "BMS2 temperature cells 2"
+      id: bms2_temp_cells2
+    cell_voltage_1:
+      name: "BMS2 cell voltage 01"
+      id: bms2_cell01_voltage
+    cell_voltage_2:
+      name: "BMS2 cell voltage 02"
+      id: bms2_cell02_voltage
+    cell_voltage_3:
+      name: "BMS2 cell voltage 03"
+      id: bms2_cell03_voltage
+    cell_voltage_4:
+      name: "BMS2 cell voltage 04"
+      id: bms2_cell04_voltage
+    cell_voltage_5:
+      name: "BMS2 cell voltage 05"
+      id: bms2_cell05_voltage
+    cell_voltage_6:
+      name: "BMS2 cell voltage 06"
+      id: bms2_cell06_voltage
+    cell_voltage_7:
+      name: "BMS2 cell voltage 07"
+      id: bms2_cell07_voltage
+    cell_voltage_8:
+      name: "BMS2 cell voltage 08"
+      id: bms2_cell08_voltage
+    cell_voltage_9:
+      name: "BMS2 cell voltage 09"
+      id: bms2_cell09_voltage
+    cell_voltage_10:
+      name: "BMS2 cell voltage 10"
+      id: bms2_cell10_voltage
+    cell_voltage_11:
+      name: "BMS2 cell voltage 11"
+      id: bms2_cell11_voltage
+    cell_voltage_12:
+      name: "BMS2 cell voltage 12"
+      id: bms2_cell12_voltage
+    cell_voltage_13:
+      name: "BMS2 cell voltage 13"
+      id: bms2_cell13_voltage
+    cell_voltage_14:
+      name: "BMS2 cell voltage 14"
+      id: bms2_cell14_voltage
+    cell_voltage_15:
+      name: "BMS2 cell voltage 15"
+      id: bms2_cell15_voltage
+    cell_voltage_16:
+      name: "BMS2 cell voltage 16"
+      id: bms2_cell16_voltage
+    operation_status_bitmask:
+      name: "BMS2 operation status bitmask"
+      id: bms2_bitmask_op
+    errors_bitmask:
+      name: "BMS2 errors bitmask"
+      id: bms2_bitmask_error
+    balancer_status_bitmask:
+      name: "BMS2 balancer status bitmask"
+      id: bms2_bitmask_balancer
+    software_version:
+      name: "BMS2 software version"
+      id: bms2_sw_version
