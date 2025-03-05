@@ -33,9 +33,9 @@
 32		bms2_battery_sw_balancing
 33		bms2_battery_sw_charge
 34		bms2_battery_sw_discharge
-35		bms2_bitmask_balancer 
+35		bms2_bitmask_balancer [U_DWORD]
 36		bms2_bitmask_op 
 37		bms2_bitmask_error 
 38		bms2_online 
 39		bms2_sw_version 
-40		esp_uptime
+40		esp_uptime [U_DWORD]
