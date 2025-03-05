@@ -1,3 +1,5 @@
+# all registers are U_WORD if not mentioned otherwise
+
 0		bms2_soc
 1		bms2_total_voltage 		* 100
 2		bms2_current 			* 100
