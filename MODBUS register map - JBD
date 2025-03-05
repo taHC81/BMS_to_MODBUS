@@ -2,8 +2,8 @@
 
 0		bms2_soc
 1		bms2_total_voltage 		* 100
-2		bms2_current 			* 100
-3		bms2_power 			* 10
+2	S_WORD	bms2_current 			* 100
+3	S_WORD	bms2_power 			* 10
 4		bms2_cycles
 5		bms2_cell_avg_voltage 		* 1000
 6		bms2_cell_min_voltage 		* 1000
@@ -35,9 +35,9 @@
 32		bms2_battery_sw_balancing
 33		bms2_battery_sw_charge
 34		bms2_battery_sw_discharge
-35		bms2_bitmask_balancer [U_DWORD]
+35	U_DWORD	bms2_bitmask_balancer
 36		bms2_bitmask_op 
 37		bms2_bitmask_error 
 38		bms2_online 
 39		bms2_sw_version 
-40		esp_uptime [U_DWORD]
+40	U_DWORD	esp_uptime
