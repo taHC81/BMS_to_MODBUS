@@ -372,6 +372,7 @@ sensor:
     id: bms1_bitmask_balancer
     address: 35
     register_type: holding
+    value_type: U_DWORD
     accuracy_decimals: 0
   - platform: modbus_controller
     modbus_controller_id: bms1
