@@ -1,43 +1,41 @@
-# all registers are U_WORD if not mentioned otherwise
-
-0		bms2_soc
-1		bms2_total_voltage 		* 100
+0	U_WORD	bms2_soc
+1	U_WORD	bms2_total_voltage 		* 100
 2	S_WORD	bms2_current 			* 100
 3	S_WORD	bms2_power 			* 10
-4		bms2_cycles
-5		bms2_cell_avg_voltage 		* 1000
-6		bms2_cell_min_voltage 		* 1000
-7		bms2_cell_max_voltage 		* 1000
-8		bms2_cell_delta_voltage		* 1000
-9		bms2_cell_min_number
-10		bms2_cell_max_number
-11		bms2_temp			* 10
-12		bms2_temp_cells1		* 10
-13		bms2_temp_cells2		* 10
-14		bms2_cell01_voltage  		* 1000
-15		bms2_cell02_voltage  		* 1000
-16		bms2_cell03_voltage  		* 1000
-17		bms2_cell04_voltage  		* 1000
-18		bms2_cell05_voltage  		* 1000
-19		bms2_cell06_voltage  		* 1000
-20		bms2_cell07_voltage  		* 1000
-21		bms2_cell08_voltage  		* 1000
-22		bms2_cell09_voltage  		* 1000
-23		bms2_cell10_voltage  		* 1000
-24		bms2_cell11_voltage  		* 1000
-25		bms2_cell12_voltage  		* 1000
-26		bms2_cell13_voltage  		* 1000
-27		bms2_cell14_voltage  		* 1000
-28		bms2_cell15_voltage  		* 1000
-29		bms2_cell16_voltage  		* 1000
-30		bms2_cap_nominal 		* 100
-31		bms2_cap_remaining 		* 100
-32		bms2_battery_sw_balancing
-33		bms2_battery_sw_charge
-34		bms2_battery_sw_discharge
+4	U_WORD	bms2_cycles
+5	U_WORD	bms2_cell_avg_voltage 		* 1000
+6	U_WORD	bms2_cell_min_voltage 		* 1000
+7	U_WORD	bms2_cell_max_voltage 		* 1000
+8	U_WORD	bms2_cell_delta_voltage		* 1000
+9	U_WORD	bms2_cell_min_number
+10	U_WORD	bms2_cell_max_number
+11	U_WORD	bms2_temp			* 10
+12	U_WORD	bms2_temp_cells1		* 10
+13	U_WORD	bms2_temp_cells2		* 10
+14	U_WORD	bms2_cell01_voltage  		* 1000
+15	U_WORD	bms2_cell02_voltage  		* 1000
+16	U_WORD	bms2_cell03_voltage  		* 1000
+17	U_WORD	bms2_cell04_voltage  		* 1000
+18	U_WORD	bms2_cell05_voltage  		* 1000
+19	U_WORD	bms2_cell06_voltage  		* 1000
+20	U_WORD	bms2_cell07_voltage  		* 1000
+21	U_WORD	bms2_cell08_voltage  		* 1000
+22	U_WORD	bms2_cell09_voltage  		* 1000
+23	U_WORD	bms2_cell10_voltage  		* 1000
+24	U_WORD	bms2_cell11_voltage  		* 1000
+25	U_WORD	bms2_cell12_voltage  		* 1000
+26	U_WORD	bms2_cell13_voltage  		* 1000
+27	U_WORD	bms2_cell14_voltage  		* 1000
+28	U_WORD	bms2_cell15_voltage  		* 1000
+29	U_WORD	bms2_cell16_voltage  		* 1000
+30	U_WORD	bms2_cap_nominal 		* 100
+31	U_WORD	bms2_cap_remaining 		* 100
+32	U_WORD	bms2_battery_sw_balancing
+33	U_WORD	bms2_battery_sw_charge
+34	U_WORD	bms2_battery_sw_discharge
 35	U_DWORD	bms2_bitmask_balancer
-36		bms2_bitmask_op 
-37		bms2_bitmask_error 
-38		bms2_online 
-39		bms2_sw_version 
+36	U_WORD	bms2_bitmask_op 
+37	U_WORD	bms2_bitmask_error 
+38	U_WORD	bms2_online 
+39	U_WORD	bms2_sw_version 
 40	U_DWORD	esp_uptime
