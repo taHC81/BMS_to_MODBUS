@@ -1,0 +1,259 @@
+substitutions:
+  name: jk-balancer
+
+esphome:
+  name: ${name}
+
+esp32:
+  variant: ESP32C3
+  board: esp32-c3-devkitm-1
+
+external_components:
+  - source: github://syssi/esphome-jk-bms@main
+    refresh: 0s
+
+# ota:
+  # platform: esphome
+logger:
+# api:
+
+# wifi:
+  # power_save_mode: none
+  # output_power: 15dB
+  # networks:
+  # - ssid: !secret wifi_ssid
+    # password: !secret wifi_password
+  # - ssid: !secret wifi_ssid_garage
+    # password: !secret wifi_password
+
+uart:
+  - id: uart_0          # JK UART
+    baud_rate: 9600
+    tx_pin: GPIO5
+    rx_pin: GPIO6
+  - id: modbus_0
+    baud_rate: 19200
+    tx_pin: GPIO21    # DI
+    rx_pin: GPIO20    # RO
+    # debug:
+      # direction: BOTH
+
+
+jk_balancer_modbus:
+  uart_id: uart_0
+  rx_timeout: 100ms
+
+jk_balancer:
+  address: 0x01
+  update_interval: 5s
+
+modbus:
+  id: modbus_conv
+  uart_id: modbus_0
+  flow_control_pin: 10  # DE+RE
+  role: server
+
+modbus_controller:
+  - modbus_id: modbus_conv
+    address: 9                  # ID 8 = BMS1 ; ID 9 = BMS2
+    command_throttle: 1000ms
+    id: modbus_device
+    server_registers:
+      - address: 0
+        read_lambda: 'return id(balancer_battery_sw_balancing).state;'
+      - address: 1
+        read_lambda: 'return id(balancer_online).state;'
+      - address: 2
+        read_lambda: 'return id(cell_count).state;'
+      - address: 3
+        read_lambda: 'return id(balance_trigger_voltage).state * 100;'
+      - address: 4
+        read_lambda: 'return id(max_balance_current).state;'
+
+      - address: 5
+        read_lambda: 'return id(esp_uptime).state;'
+        value_type: U_DWORD
+
+      - address: 6
+        read_lambda: 'return id(balancer_cell_min_voltage).state * 1000;'
+      - address: 7
+        read_lambda: 'return id(balancer_cell_max_voltage).state * 1000;'
+      - address: 8
+        read_lambda: 'return id(balancer_cell_delta_voltage).state * 1000;'
+      - address: 9
+        read_lambda: 'return id(balancer_cell_min_number).state;'
+      - address: 10
+        read_lambda: 'return id(balancer_cell_max_number).state;'
+
+      - address: 11
+        read_lambda: 'return id(battery_temperature).state * 10;'
+      - address: 12
+        read_lambda: 'return id(balancer_status).state;'
+      - address: 13
+        read_lambda: 'return id(balancing_current).state;'
+
+      - address: 14
+        read_lambda: 'return id(balancer_cell01_voltage).state * 1000;'
+      - address: 15
+        read_lambda: 'return id(balancer_cell02_voltage).state * 1000;'
+      - address: 16
+        read_lambda: 'return id(balancer_cell03_voltage).state * 1000;'
+      - address: 17
+        read_lambda: 'return id(balancer_cell04_voltage).state * 1000;'
+      - address: 18
+        read_lambda: 'return id(balancer_cell05_voltage).state * 1000;'
+      - address: 19
+        read_lambda: 'return id(balancer_cell06_voltage).state * 1000;'
+      - address: 20
+        read_lambda: 'return id(balancer_cell07_voltage).state * 1000;'
+      - address: 21
+        read_lambda: 'return id(balancer_cell08_voltage).state * 1000;'
+      - address: 22
+        read_lambda: 'return id(balancer_cell09_voltage).state * 1000;'
+      - address: 23
+        read_lambda: 'return id(balancer_cell10_voltage).state * 1000;'
+      - address: 24
+        read_lambda: 'return id(balancer_cell11_voltage).state * 1000;'
+      - address: 25
+        read_lambda: 'return id(balancer_cell12_voltage).state * 1000;'
+      - address: 26
+        read_lambda: 'return id(balancer_cell13_voltage).state * 1000;'
+      - address: 27
+        read_lambda: 'return id(balancer_cell14_voltage).state * 1000;'
+      - address: 28
+        read_lambda: 'return id(balancer_cell15_voltage).state * 1000;'
+      - address: 29
+        read_lambda: |-
+          id(onboard_led).turn_on();
+          return id(balancer_cell16_voltage).state * 1000;
+
+# text_sensor:
+  # - platform: wifi_info
+    # ip_address:
+      # name: ESP jbd-uart-rs485 IP Address
+    # ssid:
+      # name: ESP jbd-uart-rs485 Connected SSID
+
+switch:
+  # - platform: restart
+    # name: ESP jbd-uart-rs485 restart
+
+  - platform: jk_balancer
+    balancer:
+      name: "${name} balancer"
+
+  - platform: gpio
+    id: onboard_led
+    pin:
+      number: GPIO8
+      mode: output
+      inverted: true
+    on_turn_on:
+      - delay: 0.05s
+      - switch.turn_off: onboard_led
+
+binary_sensor:
+  - platform: jk_balancer
+    balancing:
+      name: "${name} balancing"
+      id: balancer_battery_sw_balancing
+    online_status:
+      name: "${name} online status"
+      id: balancer_online
+
+number:
+  - platform: jk_balancer
+    cell_count:
+      name: "${name} cell count"
+      id: cell_count
+    balance_trigger_voltage:
+      name: "${name} balance trigger voltage"
+      id: balance_trigger_voltage
+    max_balance_current:
+      name: "${name} max balance current"
+      id: max_balance_current
+
+sensor:
+  - platform: uptime
+    id: esp_uptime
+    name: "${name} uptime"
+    update_interval: 60s
+
+  - platform: jk_balancer
+    min_cell_voltage:
+      name: "${name} min cell voltage"
+      id: balancer_cell_min_voltage
+    max_cell_voltage:
+      name: "${name} max cell voltage"
+      id: balancer_cell_max_voltage
+    min_voltage_cell:
+      name: "${name} min voltage cell"
+      id: balancer_cell_min_number
+    max_voltage_cell:
+      name: "${name} max voltage cell"
+      id: balancer_cell_max_number
+    delta_cell_voltage:
+      name: "${name} delta cell voltage"
+      id: balancer_cell_delta_voltage
+
+    cell_voltage_1:
+      name: "${name} cell voltage 1"
+      id: balancer_cell01_voltage
+    cell_voltage_2:
+      name: "${name} cell voltage 2"
+      id: balancer_cell02_voltage
+    cell_voltage_3:
+      name: "${name} cell voltage 3"
+      id: balancer_cell03_voltage
+    cell_voltage_4:
+      name: "${name} cell voltage 4"
+      id: balancer_cell04_voltage
+    cell_voltage_5:
+      name: "${name} cell voltage 5"
+      id: balancer_cell05_voltage
+    cell_voltage_6:
+      name: "${name} cell voltage 6"
+      id: balancer_cell06_voltage
+    cell_voltage_7:
+      name: "${name} cell voltage 7"
+      id: balancer_cell07_voltage
+    cell_voltage_8:
+      name: "${name} cell voltage 8"
+      id: balancer_cell08_voltage
+    cell_voltage_9:
+      name: "${name} cell voltage 9"
+      id: balancer_cell09_voltage
+    cell_voltage_10:
+      name: "${name} cell voltage 10"
+      id: balancer_cell10_voltage
+    cell_voltage_11:
+      name: "${name} cell voltage 11"
+      id: balancer_cell11_voltage
+    cell_voltage_12:
+      name: "${name} cell voltage 12"
+      id: balancer_cell12_voltage
+    cell_voltage_13:
+      name: "${name} cell voltage 13"
+      id: balancer_cell13_voltage
+    cell_voltage_14:
+      name: "${name} cell voltage 14"
+      id: balancer_cell14_voltage
+    cell_voltage_15:
+      name: "${name} cell voltage 15"
+      id: balancer_cell15_voltage
+    cell_voltage_16:
+      name: "${name} cell voltage 16"
+      id: balancer_cell16_voltage
+
+    battery_temperature:
+      name: "${name} battery temperature"
+      id: battery_temperature
+    balancer_status:
+      name: "${name} balancer status"
+      id: balancer_status
+    cell_count_detected:
+      name: "${name} cell count detected"
+      id: balancer_battery_strings
+    balancing_current:
+      name: "${name} balancing current"
+      id: balancing_current
