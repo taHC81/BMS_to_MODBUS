@@ -23,8 +23,6 @@ logger:
   # networks:
   # - ssid: !secret wifi_ssid
     # password: !secret wifi_password
-  # - ssid: !secret wifi_ssid_garage
-    # password: !secret wifi_password
 
 uart:
   - id: uart_0          # JK UART
@@ -55,7 +53,7 @@ modbus:
 
 modbus_controller:
   - modbus_id: modbus_conv
-    address: 9                  # ID 8 = BMS1 ; ID 9 = BMS2
+    address: 9                  # change ID as you need
     command_throttle: 1000ms
     id: modbus_device
     server_registers:
@@ -127,17 +125,7 @@ modbus_controller:
           id(onboard_led).turn_on();
           return id(balancer_cell16_voltage).state * 1000;
 
-# text_sensor:
-  # - platform: wifi_info
-    # ip_address:
-      # name: ESP jbd-uart-rs485 IP Address
-    # ssid:
-      # name: ESP jbd-uart-rs485 Connected SSID
-
 switch:
-  # - platform: restart
-    # name: ESP jbd-uart-rs485 restart
-
   - platform: jk_balancer
     balancer:
       name: "${name} balancer"
